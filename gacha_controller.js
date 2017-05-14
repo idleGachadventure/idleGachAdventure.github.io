@@ -35,16 +35,20 @@ iGAdv.controller('GachaController', function GachaController($scope, gacha, hero
                 name: matchedHeroes[hero].name,
                 level: 1,
                 experience: 0,
+                experienceToLevel: 100,
                 rarity: matchedHeroes[hero].rarity,
                 combat: matchedHeroes[hero].combat,
                 combatLevel: 1,
                 combatExperience: 0,
+                combatExperienceToLevel: 100,
                 mining: matchedHeroes[hero].mining,
                 miningLevel: 1,
                 miningExperience: 0,
+                miningExperienceToLevel: 100,
                 build: matchedHeroes[hero].build,
                 buildLevel: 1,
                 buildExperience: 0,
+                buildExperienceToLevel: 100,
                 setTo: 0
             }
             heroes.nHeroes++;

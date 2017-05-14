@@ -82,7 +82,61 @@
                                                         You can see the selected hero's details here.
                                                     </span>
                                                     <span ng-if="noHeroSelected() == false">
-                                                        test
+                                                        <div class="row">
+                                                            <div class="col-xs-4">
+                                                            </div>
+                                                            <div class="col-xs-8">
+                                                                <div class="row">
+                                                                    <div class="col-xs-12">
+                                                                        <p class="text-center h3">Stats</p>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="row">
+                                                                    <div class="col-xs-4">
+                                                                        <p class="h4">Level: {{getSelectedHeroLevel()}}</p>
+                                                                    </div>
+                                                                    <div class="col-xs-4">
+                                                                        <p class="h4">XP: {{getSelectedHeroExperience()}} / {{getSelectedHeroExperienceToLevel()}}</p>
+                                                                    </div>
+                                                                    <div class="col-xs-4">
+                                                                        <p class="h4">Rarity: {{getSelectedHeroRarity()}}</p>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="row">
+                                                                    <div class="col-xs-4">
+                                                                        <p class="h4">Combat: {{getSelectedHeroCombat()}}</p>
+                                                                    </div>
+                                                                    <div class="col-xs-4">
+                                                                        <p class="h4">Level: {{getSelectedHeroCombatLevel()}}</p>
+                                                                    </div>
+                                                                    <div class="col-xs-4">
+                                                                        <p class="h4">XP: {{getSelectedHeroCombatExperience()}} / {{getSelectedHeroCombatExperienceToLevel()}}</p>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="row">
+                                                                    <div class="col-xs-4">
+                                                                        <p class="h4">Mining: {{getSelectedHeroMining()}}</p>
+                                                                    </div>
+                                                                    <div class="col-xs-4">
+                                                                        <p class="h4">Level: {{getSelectedHeroMiningLevel()}}</p>
+                                                                    </div>
+                                                                    <div class="col-xs-4">
+                                                                        <p class="h4">XP: {{getSelectedHeroMiningExperience()}} / {{getSelectedHeroMiningExperienceToLevel()}}</p>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="row">
+                                                                    <div class="col-xs-4">
+                                                                        <p class="h4">Build: {{getSelectedHeroBuild()}}</p>
+                                                                    </div>
+                                                                    <div class="col-xs-4">
+                                                                        <p class="h4">Level: {{getSelectedHeroBuildLevel()}}</p>
+                                                                    </div>
+                                                                    <div class="col-xs-4">
+                                                                        <p class="h4">XP: {{getSelectedHeroBuildExperience()}} / {{getSelectedHeroBuildExperienceToLevel()}}</p>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
                                                     </span>
                                                 </div>
                                             </div>
