@@ -204,6 +204,43 @@ iGAdv.service('mine', function(heroes, currencies) {
     }
 });
 
+iGAdv.service('town', function() {
+    this.currentArea = 10;
+    this.buildings = [{
+        name: "Town Center",
+        level: 1,
+        amount: 1,
+        maxAmount: 1,
+        toUpdgrade: [{
+            mineral: "Stone",
+            value: 50    
+        }, {
+            mineral: "Wood",
+            value: 50
+        }],
+        toBuild: []
+    }, {
+        name: "House",
+        level: 1,
+        amount: 1,
+        maxAmount: 100,
+        toUpgrade: [{
+            mineral: "Stone",
+            value: 100
+        }, {
+            mineral: "Wood",
+            value: 100
+        }],
+        toBuild: [{
+            mineral: "Stone",
+            value: 10
+        }, {
+            mineral: "Wood",
+            value: 10
+        }]
+    }]
+});
+
 iGAdv.controller('GachaController', function GachaController($scope, gacha, heroes, currencies) {
     $scope.getGacha = function(number) {
         return gacha.gachaList[number];
@@ -448,5 +485,11 @@ iGAdv.controller('MineController', function CurrencyController($scope, mine, cur
         if (mine.selectedHero != -1) {
             return heroes.curHeroes[mine.selectedHero].mining;
         }
+    }
+});
+
+iGAdv.controller('TownController', function TownController($scope, town) {
+    $scope.getBuildings = function() {
+        return town.buildings;
     }
 });
