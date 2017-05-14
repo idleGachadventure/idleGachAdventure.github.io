@@ -6,4 +6,12 @@ iGAdv.controller('CurrencyController', function CurrencyController($scope, curre
     $scope.getGold = function() {
         return currencies.gold;
     }
+
+    $scope.getStone = function() {
+    	return currencies.stone;
+    }
+
+    $scope.getWood = function() {
+    	return currencies.wood;
+    }
 });

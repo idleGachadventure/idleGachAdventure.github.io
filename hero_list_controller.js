@@ -1,4 +1,4 @@
-iGAdv.controller('HeroController', function HeroController($scope, gacha, heroes, currencies) {
+iGAdv.controller('HeroController', function HeroController($scope, gacha, heroes, currencies, mine) {
     $scope.getHeroList = function() {
         return heroes.curHeroes;
     }
@@ -13,5 +13,9 @@ iGAdv.controller('HeroController', function HeroController($scope, gacha, heroes
 
     $scope.selectHero = function(heroId) {
         heroes.selectedHero = heroId;
+    }
+
+    $scope.selectHeroMine = function(heroId) {
+        mine.selectedHero = heroId;
     }
 });
