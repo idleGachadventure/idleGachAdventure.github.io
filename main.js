@@ -106,6 +106,13 @@ iGAdv.service('gacha', function() {
     this.selectedGacha = 0;
 
     this.gachaMessage = "You haven't rolled yet.";
+
+    this.findNumber = function(hero) {
+        if (hero.number == this) {
+            return true;
+        }
+        return false;
+    }
 });
 
 iGAdv.service('heroes', function() {
@@ -113,6 +120,28 @@ iGAdv.service('heroes', function() {
 
     this.nHeroes = 0;
     this.curHeroes = [];
+
+    this.grantExperience = function(hero, value) {
+        hero.experience += value;
+        if (hero.experience >= hero.experienceToLevel) {
+            hero.experience -= hero.experienceToLevel;
+            hero.experienceToLevel *= 2;
+            hero.level += 1;
+            hero.mining = hero.baseMining * hero.level * hero.miningLevel;
+            hero.combat = hero.baseCombat * hero.level * hero.combatLevel;
+            hero.build = hero.baseBuild * hero.level * hero.buildLevel;
+        }
+    }
+
+    this.grantMiningExperience = function(hero, value) {
+        hero.miningExperience += value;
+        if (hero.miningExperience >= hero.miningExperienceToLevel) {
+            hero.miningExperience -= hero.miningExperienceToLevel;
+            hero.miningExperienceToLevel *= 2;
+            hero.miningLevel += 1;
+            hero.mining = hero.baseMining * hero.level * hero.miningLevel;
+        }
+    }
 });
 
 iGAdv.service('currencies', function() {
@@ -125,40 +154,58 @@ iGAdv.service('currencies', function() {
 
 iGAdv.service('mine', function(heroes, currencies) {
     this.selectedHero = -1;
+    this.minerals = [{
+        id: 1,
+        name: "Stone",
+        difficulty: 5
+    }, {
+        id: 2,
+        name: "Wood",
+        difficulty: 5
+    }];
 
-    this.stonePerSecond = function() {
-        var stonePerSec = 0;
-        var difficulty = 5;
-        var totalEfficiency = 0;
-
-        for (var i = 0; i < heroes.curHeroes.length; i++) {
-            if (heroes.curHeroes[i].subJob == 1) {
-                totalEfficiency += heroes.curHeroes[i].mining;
-            }
+    this.findId = function(mineral) {
+        if (mineral.id == this) {
+            return true;
         }
-
-        stonePerSec = totalEfficiency / difficulty;
-        return stonePerSec;
+        return false;
     }
 
-    this.woodPerSecond = function() {
-        var woodPerSec = 0;
-        var difficulty = 5;
+    this.mineralPerSecond = function(mineralId) {
+        var mineralPerSec = 0;
+        var difficulty = this.minerals.find(this.findId, mineralId).difficulty;
         var totalEfficiency = 0;
 
         for (var i = 0; i < heroes.curHeroes.length; i++) {
-            if (heroes.curHeroes[i].subJob == 2) {
+            if (heroes.curHeroes[i].subJob == mineralId) {
                 totalEfficiency += heroes.curHeroes[i].mining;
             }
         }
 
-        woodPerSec = totalEfficiency / difficulty;
-        return woodPerSec;
-    };
+        mineralPerSec = totalEfficiency / difficulty;
+        return mineralPerSec;
+    }
+
+    this.giveMiningExperience = function() {
+        for (var i = 0; i < heroes.curHeroes.length; i++) {
+            if (heroes.curHeroes[i].setTo == 1) {
+                if (heroes.curHeroes[i].subJob != 0) {
+                    var difficulty = this.minerals.find(this.findId, heroes.curHeroes[i].subJob).difficulty;
+                    if (heroes.curHeroes[i].miningLevel < difficulty) {
+                        heroes.grantMiningExperience(heroes.curHeroes[i], 1);
+                    }
+                    else {
+                        heroes.grantMiningExperience(heroes.curHeroes[i], this.minerals[heroes.curHeroes[i].subJob].difficulty / heroes.curHeroes[i].miningLevel);
+                    }
+                }
+            }
+        }
+    }
 
     this.mineThings = function() {
-        currencies.stone += this.stonePerSecond();
-        currencies.wood += this.woodPerSecond();
+        currencies.stone += this.mineralPerSecond(1);
+        currencies.wood += this.mineralPerSecond(2);
+        this.giveMiningExperience();
     }
 });
 
@@ -193,33 +240,42 @@ iGAdv.controller('GachaController', function GachaController($scope, gacha, hero
             });
 
             hero = Math.floor(Math.random()*matchedHeroes.length);
-            newHero = {
-                id: heroes.nHeroes,
-                number: matchedHeroes[hero].number,
-                name: matchedHeroes[hero].name,
-                level: 1,
-                experience: 0,
-                experienceToLevel: 100,
-                rarity: matchedHeroes[hero].rarity,
-                combat: matchedHeroes[hero].combat,
-                combatLevel: 1,
-                combatExperience: 0,
-                combatExperienceToLevel: 100,
-                mining: matchedHeroes[hero].mining,
-                miningLevel: 1,
-                miningExperience: 0,
-                miningExperienceToLevel: 100,
-                build: matchedHeroes[hero].build,
-                buildLevel: 1,
-                buildExperience: 0,
-                buildExperienceToLevel: 100,
-                subJob: 0,
-                setTo: 0
+            findHero = heroes.curHeroes.find(gacha.findNumber, matchedHeroes[hero].number)
+            if (findHero == undefined) {
+                newHero = {
+                    id: heroes.nHeroes,
+                    number: matchedHeroes[hero].number,
+                    name: matchedHeroes[hero].name,
+                    level: 1,
+                    experience: 0,
+                    experienceToLevel: 100,
+                    rarity: matchedHeroes[hero].rarity,
+                    baseCombat: matchedHeroes[hero].combat,
+                    combat: matchedHeroes[hero].combat,
+                    combatLevel: 1,
+                    combatExperience: 0,
+                    combatExperienceToLevel: 100,
+                    baseMining: matchedHeroes[hero].mining,
+                    mining: matchedHeroes[hero].mining,
+                    miningLevel: 1,
+                    miningExperience: 0,
+                    miningExperienceToLevel: 100,
+                    baseBuild: matchedHeroes[hero].build,
+                    build: matchedHeroes[hero].build,
+                    buildLevel: 1,
+                    buildExperience: 0,
+                    buildExperienceToLevel: 100,
+                    subJob: 0,
+                    setTo: 0
+                }
+                heroes.nHeroes++;
+                heroes.curHeroes.push(newHero);
             }
-            heroes.nHeroes++;
-            heroes.curHeroes.push(newHero);
+            else {
+                heroes.grantExperience(heroes.curHeroes[findHero.id], 100);
+            }
 
-            gacha.gachaMessage = "You rolled (" + newHero.rarity + "*) " + newHero.name + "!";
+            gacha.gachaMessage = "You rolled (" + matchedHeroes[hero].rarity + "*) " + matchedHeroes[hero].name + "!";
         }
     }
 });
@@ -382,12 +438,8 @@ iGAdv.controller('MineController', function CurrencyController($scope, mine, cur
         }
     }
 
-    $scope.getStonePerSecond = function() {
-        return mine.stonePerSecond();
-    }
-
-    $scope.getWoodPerSecond = function() {
-        return mine.woodPerSecond();
+    $scope.getMineralPerSecond = function(mineralId) {
+        return mine.mineralPerSecond(mineralId);
     }
 
     $scope.getSelectedHeroName = function() {
