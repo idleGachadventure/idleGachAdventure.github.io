@@ -84,6 +84,7 @@
                                                     <span ng-if="noHeroSelected() == false">
                                                         <div class="row">
                                                             <div class="col-xs-4">
+                                                                Picture goes here
                                                             </div>
                                                             <div class="col-xs-8">
                                                                 <div class="row">
@@ -135,6 +136,18 @@
                                                                         <p class="h4">XP: {{getSelectedHeroBuildExperience()}} / {{getSelectedHeroBuildExperienceToLevel()}}</p>
                                                                     </div>
                                                                 </div>
+                                                            </div>
+                                                        </div>
+                                                        <hr>
+                                                        <div class="row">
+                                                            <div class="col-xs-4">
+                                                                <button class="btn btn-block btn-danger" ng-click="setHeroTo(1)">Set to Mine</button>
+                                                            </div>
+                                                            <div class="col-xs-4">
+                                                                <button class="btn btn-block btn-primary" ng-click="setHeroTo(2)">Set to Town</button>
+                                                            </div>
+                                                            <div class="col-xs-4">
+                                                                <button class="btn btn-block btn-success" ng-click="setHeroTo(3)">Set to Wild</button>
                                                             </div>
                                                         </div>
                                                     </span>
@@ -229,7 +242,10 @@
                                                     <span ng-repeat="hero in getHeroList()">
                                                         <div class="row">
                                                             <div class="col-xs-12">
-                                                                <button class="btn btn-default btn-block text-center" ng-click="selectHero(hero.id)">({{hero.rarity}}*) {{hero.name}}</button>
+                                                                <button class="btn btn-default btn-block text-center" ng-click="selectHero(hero.id)" ng-if="hero.setTo == 0">({{hero.rarity}}*) {{hero.name}}</button>
+                                                                <button class="btn btn-danger btn-block text-center" ng-click="selectHero(hero.id)" ng-if="hero.setTo == 1">({{hero.rarity}}*) {{hero.name}}</button>
+                                                                <button class="btn btn-primary btn-block text-center" ng-click="selectHero(hero.id)" ng-if="hero.setTo == 2">({{hero.rarity}}*) {{hero.name}}</button>
+                                                                <button class="btn btn-success btn-block text-center" ng-click="selectHero(hero.id)" ng-if="hero.setTo == 3">({{hero.rarity}}*) {{hero.name}}</button>
                                                             </div>
                                                         </div>
                                                     </span>
@@ -258,6 +274,15 @@
                                                     <h3 class="panel-title text-center">Heroes Mining</h3>
                                                 </div>
                                                 <div class="panel-body">
+                                                    <span ng-repeat="hero in getHeroList()">
+                                                        <span ng-if="hero.setTo == 1">
+                                                            <div class="row">
+                                                                <div class="col-xs-12">
+                                                                    <button class="btn btn-default btn-block text-center" ng-click="selectHero(hero.id)">({{hero.rarity}}*) {{hero.name}}</button>
+                                                                </div>
+                                                            </div>
+                                                        </span>
+                                                    </span>
                                                 </div>
                                             </div>
                                         </div>
@@ -267,6 +292,15 @@
                                                     <h3 class="panel-title text-center">Heroes Building</h3>
                                                 </div>
                                                 <div class="panel-body">
+                                                    <span ng-repeat="hero in getHeroList()">
+                                                        <span ng-if="hero.setTo == 2">
+                                                            <div class="row">
+                                                                <div class="col-xs-12">
+                                                                    <button class="btn btn-default btn-block text-center" ng-click="selectHero(hero.id)">({{hero.rarity}}*) {{hero.name}}</button>
+                                                                </div>
+                                                            </div>
+                                                        </span>
+                                                    </span>
                                                 </div>
                                             </div>
                                         </div>
@@ -276,6 +310,15 @@
                                                     <h3 class="panel-title text-center">Heroes Exploring</h3>
                                                 </div>
                                                 <div class="panel-body">
+                                                    <span ng-repeat="hero in getHeroList()">
+                                                        <span ng-if="hero.setTo == 3">
+                                                            <div class="row">
+                                                                <div class="col-xs-12">
+                                                                    <button class="btn btn-default btn-block text-center" ng-click="selectHero(hero.id)">({{hero.rarity}}*) {{hero.name}}</button>
+                                                                </div>
+                                                            </div>
+                                                        </span>
+                                                    </span>
                                                 </div>
                                             </div>
                                         </div>

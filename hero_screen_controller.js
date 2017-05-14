@@ -84,4 +84,8 @@ iGAdv.controller('HeroDetailsController', function HeroDetailsController($scope,
         }
         return false;
     }
+
+    $scope.setHeroTo = function(jobId) {
+        heroes.curHeroes[heroes.selectedHero].setTo = jobId;
+    }
 });
