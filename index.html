@@ -1,0 +1,229 @@
+<!doctype html>
+<html lang="en" ng-app="iGAdv">
+    <head>
+        <meta charset="utf-8">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"/>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.2/angular.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+        <script src="main.js"></script>
+    </head>
+    <body>
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-xs-12">
+                    <p class="text-center">Idle GachAdventure alpha 0.0v</p>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-xs-2">
+                    <div class="row">
+                        <div class="col-xs-12">
+                            <div class="panel panel-default" ng-controller="CurrencyController">
+                                <div class="panel-heading">
+                                    <h3 class="panel-title text-center">Currencies</h3>
+                                </div>
+                                <div class="panel-body">
+                                    <p>Coins: {{getCoins()}}</p>
+                                    <p>Gold: {{getGold()}}</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xs-10">
+                    <div class="row">
+                        <div class="col-xs-12">
+                            <div class="well well-sm">
+                                <div class="row">
+                                    <div class="col-xs-12">
+                                        <ul class="nav nav-pills">
+                                            <li role="presentation" class="active">
+                                                <a href="#heroes" data-target="#heroes, #heroes2" data-toggle="pill">Heroes</a>
+                                            </li>
+                                            <li role="presentation">
+                                                <a href="#gacha" data-target="#gacha, #gacha2" data-toggle="pill">Gacha</a>
+                                            </li>
+                                            <li role="presentation">
+                                                <a href="#mine" data-target="#mine, #mine2" data-toggle="pill">Mine</a>
+                                            </li>
+                                            <li role="presentation">
+                                                <a href="#town" data-target="#town, #town2" data-toggle="pill">Town</a>
+                                            </li>
+                                            <li role="presentation">
+                                                <a href="#wild" data-target="#wild, #wild2" data-toggle="pill">Wilderness</a>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-xs-8">
+                            <div class="tab-content">
+                                <div class="tab-pane active" id="heroes" ng-controller="HeroDetailsController">
+                                    <div class="panel panel-default">
+                                        <div class="panel-heading">
+                                            <h3 class="panel-title text-center">{{getSelectedHeroName()}}</h3>
+                                        </div>
+                                        <div class="panel-body">
+                                            <div class="row">
+                                                <div class="col-xs-12">
+                                                    <span ng-if="noHeroSelected() == true">
+                                                        You can see the selected hero's details here.
+                                                    </span>
+                                                    <span ng-if="noHeroSelected() == false">
+                                                        test
+                                                    </span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="tab-pane" id="gacha" ng-controller="GachaController">
+                                    <div class="panel panel-default">
+                                        <div class="panel-heading">
+                                            <h3 class="panel-title text-center">{{getGacha(getSelectedGacha()).name}}</h3>
+                                        </div>
+                                        <div class="panel-body">
+                                            <div class="row">
+                                                <div class="col-xs-12">
+                                                    {{getGacha(getSelectedGacha()).description}}
+                                                    <hr>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-xs-4">
+                                                    Rates:
+                                                    <ul>
+                                                        <li ng-repeat="rarities in getGacha(getSelectedGacha()).rates">
+                                                            {{rarities.chance}}% for {{rarities.rarity}}*
+                                                        </li>
+                                                    </ul>
+                                                </div>
+                                                <div class="col-xs-8">
+                                                    <div class="row">
+                                                        <div class="col-xs-6">
+                                                            <button class="btn btn-block btn-primary" ng-click="rollHero(getSelectedGacha())">Roll a Hero!</button>
+                                                        </div>
+                                                        <div class="col-xs-6">
+                                                            Cost: {{getGacha(getSelectedGacha()).cost}} coins
+                                                        </div>
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="col-xs-12">
+                                                            <hr>
+                                                            <p class="text-center">{{getGachaMessage()}}</p>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="tab-pane" id="mine">
+                                    <div class="panel panel-default">
+                                        <div class="panel-heading">
+                                            <h3 class="panel-title text-center">Mine</h3>
+                                        </div>
+                                        <div class="panel-body">
+                                            This is where you get resources. You need resources to build/upgrade stuff.
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="tab-pane" id="town">
+                                    <div class="panel panel-default">
+                                        <div class="panel-heading">
+                                            <h3 class="panel-title text-center">Town Center</h3>
+                                        </div>
+                                        <div class="panel-body">
+                                            This is where you get resources. You need resources to build/upgrade stuff.
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="tab-pane" id="wild">
+                                    <div class="panel panel-default">
+                                        <div class="panel-heading">
+                                            <h3 class="panel-title text-center">Wilderness</h3>
+                                        </div>
+                                        <div class="panel-body">
+                                            This is where you get resources. You need resources to build/upgrade stuff.
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-xs-4" ng-controller="HeroController">
+                            <div class="row">
+                                <div class="col-xs-12">
+                                    <div class="tab-content">
+                                        <div class="tab-pane active" id="heroes2">
+                                            <div class="panel panel-default">
+                                                <div class="panel-heading">
+                                                    <h3 class="panel-title text-center">Current Heroes</h3>
+                                                </div>
+                                                <div class="panel-body">
+                                                    <span ng-repeat="hero in getHeroList()">
+                                                        <div class="row">
+                                                            <div class="col-xs-12">
+                                                                <button class="btn btn-default btn-block text-center" ng-click="selectHero(hero.id)">({{hero.rarity}}*) {{hero.name}}</button>
+                                                            </div>
+                                                        </div>
+                                                    </span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="tab-pane" id="gacha2">
+                                            <div class="panel panel-default">
+                                                <div class="panel-heading">
+                                                    <h3 class="panel-title text-center">Gacha List</h3>
+                                                </div>
+                                                <div class="panel-body">
+                                                    <div class="row">
+                                                        <div class="col-xs-12">
+                                                            <span ng-repeat="gacha in getGachaList()">
+                                                                <button class="btn btn-block btn-default" ng-click="setGachaDetails(gacha.id)">{{gacha.name}}</button>
+                                                            </span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="tab-pane" id="mine2">
+                                            <div class="panel panel-default">
+                                                <div class="panel-heading">
+                                                    <h3 class="panel-title text-center">Heroes Mining</h3>
+                                                </div>
+                                                <div class="panel-body">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="tab-pane" id="town2">
+                                            <div class="panel panel-default">
+                                                <div class="panel-heading">
+                                                    <h3 class="panel-title text-center">Heroes Building</h3>
+                                                </div>
+                                                <div class="panel-body">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="tab-pane" id="wild2">
+                                            <div class="panel panel-default">
+                                                <div class="panel-heading">
+                                                    <h3 class="panel-title text-center">Heroes Exploring</h3>
+                                                </div>
+                                                <div class="panel-body">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>
