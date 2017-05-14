@@ -1,1 +1,1 @@
-# idleGachAdventure.github.io
+# WIP, not even playable yet
