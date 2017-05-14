@@ -5,6 +5,7 @@
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"/>
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
         <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.2/angular.min.js"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.2/angular-cookies.js"></script>
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 
         <script src="main.js"></script>
@@ -18,7 +19,7 @@
         <script src="currency_controller.js"></script>
         <script src="mine_controller.js"></script>
     </head>
-    <body>
+    <body ng-controller="MainController">
         <div class="container-fluid">
             <div class="row">
                 <div class="col-xs-12">
@@ -42,7 +43,7 @@
                     </div>
                     <div class="row">
                         <div class="col-xs-12">
-                            <div class="panel panel-default" ng-controller="CurrencyController">
+                            <div class="panel panel-default">
                                 <div class="panel-heading">
                                     <h3 class="panel-title text-center">Resources</h3>
                                 </div>
@@ -220,12 +221,29 @@
                                         <div class="panel-body">
                                             <div class="row">
                                                 <div class="col-xs-6">
-                                                    <p>Stone/s:</p>
-                                                    <p>Wood/s:</p>
+                                                    <p>Stone/s: {{getStonePerSecond()}}</p>
+                                                    <p>Wood/s: {{getWoodPerSecond()}}</p>
                                                 </div>
                                                 <div class="col-xs-6">
-                                                    <span ng-if="getSelectedHero() == -1">
-                                                        <p class="text-center">Select a hero</p>
+                                                    <div class="row">
+                                                        <div class="col-xs-12">
+                                                            <p class="text-center">{{getSelectedHeroName()}}</p>
+                                                        </div>
+                                                    </div>
+                                                    <span ng-if="getSelectedHero() != -1">
+                                                        <div class="row">
+                                                            <div class="col-xs-12">
+                                                                <p>Mining Power: {{getSelectedHeroMining()}}</p>
+                                                            </div>
+                                                        </div>
+                                                        <div class="row">
+                                                            <div class="col-xs-6">
+                                                                <button class="btn btn-block btn-default">Gather Stone</button>
+                                                            </div>
+                                                            <div class="col-xs-6">
+                                                                <button class="btn btn-block btn-default">Gather Wood</button>
+                                                            </div>
+                                                        </div>
                                                     </span>
                                                 </div>
                                             </div>
