@@ -2,7 +2,6 @@ var iGAdv = angular.module('iGAdv', []);
 
 iGAdv.controller('MainController', function MainController($scope, $interval, heroes, currencies, mine) {
     var timer = $interval(function () {
-        currencies.coins++;
         mine.mineThings();
     }, 1000, 0);
 
@@ -16,8 +15,6 @@ iGAdv.controller('MainController', function MainController($scope, $interval, he
         localStorage.setItem('tokens', currencies.tokens);
         localStorage.setItem('stone', currencies.stone);
         localStorage.setItem('wood', currencies.wood);
-
-        localStorage.setItem('miningHeroes', mine.miningHeroes);
     }
 
     //var autoSave = $interval(saveGame, 15000, 0);
@@ -31,8 +28,6 @@ iGAdv.controller('MainController', function MainController($scope, $interval, he
             currencies.tokens = localStorage.getItem('tokens');
             currencies.stone = localStorage.getItem('stone');
             currencies.wood = localStorage.getItem('wood');
-
-            mine.miningHeroes = localStorage.getItem('miningHeroes');
         }
     }
 
