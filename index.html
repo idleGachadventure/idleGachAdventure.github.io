@@ -9,15 +9,6 @@
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 
         <script src="main.js"></script>
-        <script src="gacha_service.js"></script>
-        <script src="hero_service.js"></script>
-        <script src="currency_service.js"></script>
-        <script src="mine_service.js"></script>
-        <script src="gacha_controller.js"></script>
-        <script src="hero_list_controller.js"></script>
-        <script src="hero_screen_controller.js"></script>
-        <script src="currency_controller.js"></script>
-        <script src="mine_controller.js"></script>
     </head>
     <body ng-controller="MainController">
         <div class="container-fluid">
@@ -36,7 +27,7 @@
                                 </div>
                                 <div class="panel-body">
                                     <p>Coins: {{getCoins()}}</p>
-                                    <p>Gold: {{getGold()}}</p>
+                                    <p>Tokens: {{getTokens()}}</p>
                                 </div>
                             </div>
                         </div>
@@ -234,14 +225,15 @@
                                                         <div class="row">
                                                             <div class="col-xs-12">
                                                                 <p>Mining Power: {{getSelectedHeroMining()}}</p>
+                                                                <p>Gathering: {{getCurrentSubJob()}}</p>
                                                             </div>
                                                         </div>
                                                         <div class="row">
                                                             <div class="col-xs-6">
-                                                                <button class="btn btn-block btn-default">Gather Stone</button>
+                                                                <button class="btn btn-block btn-default" ng-click="setSubJob(getSelectedHero(), 1)">Gather Stone</button>
                                                             </div>
                                                             <div class="col-xs-6">
-                                                                <button class="btn btn-block btn-default">Gather Wood</button>
+                                                                <button class="btn btn-block btn-default" ng-click="setSubJob(getSelectedHero(), 2)">Gather Wood</button>
                                                             </div>
                                                         </div>
                                                     </span>
