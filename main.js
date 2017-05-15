@@ -1,8 +1,9 @@
 var iGAdv = angular.module('iGAdv', []);
 
-iGAdv.controller('MainController', function MainController($scope, $interval, heroes, currencies, mine) {
+iGAdv.controller('MainController', function MainController($scope, $interval, heroes, currencies, mine, town) {
     var timer = $interval(function () {
         mine.mineThings();
+        town.buildStuff();
     }, 1000, 0);
 
     var saveGame = function() {
@@ -172,7 +173,7 @@ iGAdv.service('mine', function(heroes, currencies) {
         var totalEfficiency = 0;
 
         for (var i = 0; i < heroes.curHeroes.length; i++) {
-            if (heroes.curHeroes[i].subJob == mineralId) {
+            if (heroes.curHeroes[i].setTo == 1 && heroes.curHeroes[i].subJob == mineralId) {
                 totalEfficiency += heroes.curHeroes[i].mining;
             }
         }
@@ -204,9 +205,13 @@ iGAdv.service('mine', function(heroes, currencies) {
     }
 });
 
-iGAdv.service('town', function() {
+iGAdv.service('town', function(heroes) {
     this.currentArea = 10;
+    this.currentProgression = 0;
+    this.currentlyBuilding = -1;
+    this.currentlyUpgrading = -1;
     this.buildings = [{
+        id: 0,
         name: "Town Center",
         level: 1,
         amount: 1,
@@ -222,6 +227,7 @@ iGAdv.service('town', function() {
         toBuild: [],
         powerToBuild: 0
     }, {
+        id: 1,
         name: "House",
         level: 1,
         amount: 1,
@@ -243,6 +249,24 @@ iGAdv.service('town', function() {
         }],
         powerToBuild: 100
     }]
+
+    this.buildPerSecond = function() {
+        var buildPerSec = 0;
+
+        for (var i = 0; i < heroes.curHeroes.length; i++) {
+            if (heroes.curHeroes[i].setTo == 2) {
+                buildPerSec += heroes.curHeroes[i].build;
+            }
+        }
+
+        return buildPerSec;
+    }
+
+    this.buildStuff = function() {
+        if (this.currentlyBuilding != -1 || this.currentlyUpgrading != -1) {
+            this.currentProgression += this.buildPerSecond();
+        }
+    }
 });
 
 iGAdv.controller('GachaController', function GachaController($scope, gacha, heroes, currencies) {
@@ -495,5 +519,33 @@ iGAdv.controller('MineController', function CurrencyController($scope, mine, cur
 iGAdv.controller('TownController', function TownController($scope, town) {
     $scope.getBuildings = function() {
         return town.buildings;
+    }
+
+    $scope.getCurrentlyBuilding = function() {
+        return town.currentlyBuilding;
+    }
+
+    $scope.setCurrentlyBuilding = function(buildId) {
+        if (town.currentlyBuilding == -1 && town.currentlyUpgrading == -1) {
+            town.currentlyBuilding = buildId;
+        }
+    }
+
+    $scope.getCurrentlyUpgrading = function() {
+        return town.currentlyUpgrading;
+    }
+
+    $scope.setCurrentlyUpgrading = function(buildId) {
+        if (town.currentlyBuilding == -1 && town.currentlyUpgrading == -1) {
+            town.currentlyUpgrading = buildId;
+        }
+    }
+
+    $scope.getBuildPerSec = function() {
+        return town.buildPerSecond();
+    }
+
+    $scope.getCurrentProgression = function() {
+        return town.currentProgression;
     }
 });
