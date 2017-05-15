@@ -211,14 +211,16 @@ iGAdv.service('town', function() {
         level: 1,
         amount: 1,
         maxAmount: 1,
-        toUpdgrade: [{
+        toUpgrade: [{
             mineral: "Stone",
             value: 50    
         }, {
             mineral: "Wood",
             value: 50
         }],
-        toBuild: []
+        powerToUpgrade: 500,
+        toBuild: [],
+        powerToBuild: 0
     }, {
         name: "House",
         level: 1,
@@ -231,13 +233,15 @@ iGAdv.service('town', function() {
             mineral: "Wood",
             value: 100
         }],
+        powerToUpgrade: 1000,
         toBuild: [{
             mineral: "Stone",
             value: 10
         }, {
             mineral: "Wood",
             value: 10
-        }]
+        }],
+        powerToBuild: 100
     }]
 });
 
