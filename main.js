@@ -143,19 +143,17 @@ iGAdv.service('heroes', function() {
 iGAdv.service('currencies', function() {
     this.coins = 30;
     this.tokens = 0;
-
-    this.stone = 0;
-    this.wood = 0;
 });
 
-iGAdv.service('mine', function(heroes, currencies) {
+iGAdv.service('mine', function(heroes) {
     this.selectedHero = -1;
+    this.mineralStock = [0, 0];
     this.minerals = [{
-        id: 1,
+        id: 0,
         name: "Stone",
         difficulty: 5
     }, {
-        id: 2,
+        id: 1,
         name: "Wood",
         difficulty: 5
     }];
@@ -185,7 +183,7 @@ iGAdv.service('mine', function(heroes, currencies) {
     this.giveMiningExperience = function() {
         for (var i = 0; i < heroes.curHeroes.length; i++) {
             if (heroes.curHeroes[i].setTo == 1) {
-                if (heroes.curHeroes[i].subJob != 0) {
+                if (heroes.curHeroes[i].subJob != -1) {
                     var difficulty = this.minerals.find(this.findId, heroes.curHeroes[i].subJob).difficulty;
                     if (heroes.curHeroes[i].miningLevel < difficulty) {
                         heroes.grantMiningExperience(heroes.curHeroes[i], 1);
@@ -199,8 +197,9 @@ iGAdv.service('mine', function(heroes, currencies) {
     }
 
     this.mineThings = function() {
-        currencies.stone += this.mineralPerSecond(1);
-        currencies.wood += this.mineralPerSecond(2);
+        for (var i = 0; i < this.minerals.length; i++) {
+            this.mineralStock[i] += this.mineralPerSecond(i);
+        }
         this.giveMiningExperience();
     }
 });
@@ -325,7 +324,7 @@ iGAdv.controller('GachaController', function GachaController($scope, gacha, hero
                     buildLevel: 1,
                     buildExperience: 0,
                     buildExperienceToLevel: 100,
-                    subJob: 0,
+                    subJob: -1,
                     setTo: 0
                 }
                 heroes.nHeroes++;
@@ -451,11 +450,11 @@ iGAdv.controller('HeroDetailsController', function HeroDetailsController($scope,
 
     $scope.setHeroTo = function(jobId) {
         heroes.curHeroes[heroes.selectedHero].setTo = jobId;
-        heroes.curHeroes[heroes.selectedHero].subJob = 0;
+        heroes.curHeroes[heroes.selectedHero].subJob = -1;
     }
 });
 
-iGAdv.controller('CurrencyController', function CurrencyController($scope, currencies) {
+iGAdv.controller('CurrencyController', function CurrencyController($scope, currencies, mine) {
     $scope.getCoins = function() {
         return Math.round(currencies.coins*100000)/100000;
     }
@@ -465,11 +464,11 @@ iGAdv.controller('CurrencyController', function CurrencyController($scope, curre
     }
 
     $scope.getStone = function() {
-        return Math.round(currencies.stone*100000)/100000;
+        return Math.round(mine.mineralStock[0]*100000)/100000;
     }
 
     $scope.getWood = function() {
-        return Math.round(currencies.wood*100000)/100000;
+        return Math.round(mine.mineralStock[1]*100000)/100000;
     }
 });
 
@@ -484,17 +483,11 @@ iGAdv.controller('MineController', function CurrencyController($scope, mine, cur
 
     $scope.getCurrentSubJob = function() {
         var subJob = heroes.curHeroes[mine.selectedHero].subJob;
-        if (subJob == 0) {
+        if (subJob == -1) {
             return "Nothing";
         }
-        else if (subJob == 1) {
-            return "Stone";
-        }
-        else if (subJob == 2) {
-            return "Wood";
-        }
         else {
-            return "Oops, something went wrong. If you're seeing this message, please report.";
+            return mine.minerals[subJob].name;
         }
     }
 
