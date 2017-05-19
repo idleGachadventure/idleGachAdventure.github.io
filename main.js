@@ -199,6 +199,7 @@ iGAdv.service('mine', function(heroes) {
     this.mineThings = function() {
         for (var i = 0; i < this.minerals.length; i++) {
             this.mineralStock[i] += this.mineralPerSecond(i);
+            this.mineralStock[i] = Math.round(this.mineralStock[i] * 100)/100;
         }
         this.giveMiningExperience();
     }
@@ -454,7 +455,7 @@ iGAdv.controller('HeroDetailsController', function HeroDetailsController($scope,
     }
 });
 
-iGAdv.controller('CurrencyController', function CurrencyController($scope, currencies, mine) {
+iGAdv.controller('CurrencyController', function CurrencyController($scope, currencies) {
     $scope.getCoins = function() {
         return Math.round(currencies.coins*100000)/100000;
     }
@@ -462,13 +463,15 @@ iGAdv.controller('CurrencyController', function CurrencyController($scope, curre
     $scope.getTokens = function() {
         return Math.round(currencies.tokens*100000)/100000;
     }
+});
 
-    $scope.getStone = function() {
-        return Math.round(mine.mineralStock[0]*100000)/100000;
+iGAdv.controller('ResourceController', function ResourceController($scope, mine) {
+    $scope.getMineralList = function() {
+        return mine.minerals;
     }
 
-    $scope.getWood = function() {
-        return Math.round(mine.mineralStock[1]*100000)/100000;
+    $scope.getMineralStock = function() {
+        return mine.mineralStock;
     }
 });
 
