@@ -1,0 +1,23 @@
+body {
+	position: absolute;
+	width: 100%;
+	height: 100%;
+}
+
+.main_container {
+	width: 94%;
+	height: 100%;
+	background-color: #f9efcc;
+}
+
+.left_margin {
+	width: 3%;
+	height: 100%;
+	background: linear-gradient(to right, #d9a967, #f9efcc);
+}
+
+.right_margin {
+	width: 3%;
+	height: 100%;
+	background: linear-gradient(to right, #f9efcc, #d9a967);
+}
